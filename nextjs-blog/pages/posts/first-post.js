@@ -11,9 +11,6 @@ const FirstPost = () => {
       </Head>
 
       <h1 className="title">First Post</h1>
-      <h2>
-        <Link href="/">Back to home</Link>
-      </h2>
     </Layout>
   );
 };
