@@ -3,8 +3,6 @@ import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 
 const Post = ({ postData }) => {
-  console.log(postData);
-
   return (
     <Layout>
       {postData.title}
