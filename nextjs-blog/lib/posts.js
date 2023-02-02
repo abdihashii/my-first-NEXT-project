@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
+// Returns the current working directory (cwd) and the posts dir in it
 const postsDirectory = path.join(process.cwd(), 'posts');
 
 export function getSortedPostsData() {
@@ -30,4 +31,36 @@ export function getSortedPostsData() {
     if (a.date < b.date) return 1;
     else return -1;
   });
+}
+
+// Returns an array of objects that looks like:
+// {
+//   params: {
+//     fileId: 'ssg-ssr'
+//   }
+// }
+export function getAllPostIds() {
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  return fileNames.map((fileName) => {
+    return {
+      params: {
+        fileId: fileName.replace(/\.md$/, ''),
+      },
+    };
+  });
+}
+
+export function getPostData(fileId) {
+  const fullPath = path.join(postsDirectory, `${fileId}.md`);
+  const fileContents = fs.readFileSync(fullPath);
+
+  // use gray-matter to poarse the post metadata section
+  const matterResult = matter(fileContents);
+
+  // combine the data with the file id
+  return {
+    fileId,
+    ...matterResult.data,
+  };
 }
