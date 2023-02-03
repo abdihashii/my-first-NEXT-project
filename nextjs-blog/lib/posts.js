@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { remark } from 'remark';
+import html from 'remark-html';
 
 // Returns the current working directory (cwd) and the posts dir in it
 const postsDirectory = path.join(process.cwd(), 'posts');
@@ -51,16 +53,23 @@ export function getAllPostIds() {
   });
 }
 
-export function getPostData(fileId) {
+export async function getPostData(fileId) {
   const fullPath = path.join(postsDirectory, `${fileId}.md`);
   const fileContents = fs.readFileSync(fullPath);
 
   // use gray-matter to poarse the post metadata section
   const matterResult = matter(fileContents);
 
+  // Use remark to convert markdown into HTML string
+  const processedContent = await remark()
+    .use(html)
+    .process(matterResult.content);
+  const contentHtml = processedContent.toString();
+
   // combine the data with the file id
   return {
     fileId,
+    contentHtml,
     ...matterResult.data,
   };
 }

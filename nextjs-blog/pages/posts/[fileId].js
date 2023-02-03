@@ -1,22 +1,29 @@
-import React from 'react';
+import Head from 'next/head';
+import Date from '../../components/date';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 
 const Post = ({ postData }) => {
   return (
     <Layout>
+      <Head>
+        <title>{postData.title}</title>
+      </Head>
+
       {postData.title}
       <br />
       {postData.fileId}
       <br />
-      {postData.date}
+      <Date dateString={postData.date} />
+      <br />
+      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
     </Layout>
   );
 };
 
 // Returns a list of possible values for file id
 export async function getStaticPaths() {
-  const paths = getAllPostIds();
+  const paths = JSON.parse(JSON.stringify(getAllPostIds()));
 
   return {
     paths,
@@ -26,7 +33,7 @@ export async function getStaticPaths() {
 
 // Fetches necessary data for the blog post using params.fileId
 export async function getStaticProps({ params }) {
-  const postData = JSON.parse(JSON.stringify(getPostData(params.fileId)));
+  const postData = await getPostData(params.fileId);
 
   return {
     props: {
