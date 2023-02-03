@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Layout from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
+import Date from '../components/date';
 
 export default function Home({ allPostsData }) {
   return (
@@ -33,11 +34,11 @@ export default function Home({ allPostsData }) {
             }) => {
               return (
                 <li key={fileId} className={utilStyles.listItem}>
-                  {title}
+                  <Link href={`/posts/${fileId}`}>{title}</Link>
                   <br />
-                  {fileId}
-                  <br />
-                  {date}
+                  <small className={utilStyles.lightText}>
+                    <Date dateString={date} />
+                  </small>
                 </li>
               );
             },
