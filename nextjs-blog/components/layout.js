@@ -19,27 +19,25 @@ const Layout = ({ children, home }) => {
         <meta
           property="og:image"
           content={`https://og-image.vercel.app/${encodeURI(
-            siteTitle,
+            siteTitle
           )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg}`}
         />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
-      <header>
+      <header className={styles.header}>
         {home ? (
           <>
             <Image
               priority
               src="/images/profile.jpg"
-              className={(utilStyles.borderCircle, utilStyles.center)}
+              className={utilStyles.borderCircle}
               height={144}
               width={144}
-              alt=""
+              alt={name}
             />
-            <h1 className={(utilStyles.heading2Xl, utilStyles.textCenter)}>
-              {name}
-            </h1>
+            <h1 className={utilStyles.heading2Xl}>{name}</h1>
           </>
         ) : (
           <>
@@ -47,17 +45,17 @@ const Layout = ({ children, home }) => {
               <Image
                 priority
                 src="/images/profile.jpg"
-                className={(utilStyles.borderCircle, utilStyles.center)}
+                className={utilStyles.borderCircle}
                 height={108}
                 width={108}
-                alt=""
+                alt={name}
               />
-              <h2 className={(utilStyles.headingLg, utilStyles.textCenter)}>
-                <Link href="/" className={utilStyles.colorInherit}>
-                  {name}
-                </Link>
-              </h2>
             </Link>
+            <h2 className={utilStyles.headingLg}>
+              <Link href="/" className={utilStyles.colorInherit}>
+                {name}
+              </Link>
+            </h2>
           </>
         )}
       </header>
@@ -65,7 +63,7 @@ const Layout = ({ children, home }) => {
       <main>{children}</main>
 
       {!home && (
-        <div className={utilStyles.backToHome}>
+        <div className={styles.backToHome}>
           <Link href="/">Back to home</Link>
         </div>
       )}
